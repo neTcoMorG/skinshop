@@ -1,6 +1,5 @@
 package mc.jun.skinshop.domain.dto.shop;
 
-
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -9,9 +8,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateSellDto {
+public class ItemDto {
 
-    @NotNull private String title;
-    @Nullable private String text;
-    @NotNull ItemDto item;
+    @NotNull private Integer price;
+    @NotNull private Long cate_id;
+    @Nullable private String name;
 }
