@@ -11,7 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateSellDto {
 
+    public CreateSellDto(String title, String text, ItemDto item) {
+        this.title = title;
+        this.text = text;
+        this.item = item;
+    }
+
     @NotNull private String title;
     @Nullable private String text;
     @NotNull ItemDto item;
+
 }
