@@ -10,10 +10,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shop")
+@RequestMapping("/api/shop")
 @RequiredArgsConstructor
 public class ShopController {
 
@@ -30,5 +31,10 @@ public class ShopController {
         Member member = memberRepository.findByNickname("조영준").orElseThrow();
         shopService.createSell(member, dto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{memberName}")
+    public List<Sell> getCellByMemberName (@PathVariable(name = "memberName") String name) {
+        return new ArrayList<>();
     }
 }

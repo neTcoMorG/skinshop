@@ -9,7 +9,6 @@ import mc.jun.skinshop.domain.entity.shop.Sell;
 import mc.jun.skinshop.domain.repository.CategoryRepository;
 import mc.jun.skinshop.domain.repository.SellRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
