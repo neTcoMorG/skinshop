@@ -1,7 +1,8 @@
 package mc.jun.skinshop.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import mc.jun.skinshop.domain.dto.shop.CreateSellDto;
+import mc.jun.skinshop.domain.dto.shop.request.CreateSellDto;
+import mc.jun.skinshop.domain.dto.shop.response.SellResponseDto;
 import mc.jun.skinshop.domain.entity.member.Member;
 import mc.jun.skinshop.domain.entity.shop.Category;
 import mc.jun.skinshop.domain.entity.shop.Item;
@@ -10,6 +11,7 @@ import mc.jun.skinshop.domain.repository.CategoryRepository;
 import mc.jun.skinshop.domain.repository.SellRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +22,14 @@ public class ShopServiceImplV1 implements ShopService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<Sell> getAll() {
-        return sellRepository.findAll();
+    public List<SellResponseDto> getAll() {
+        List<SellResponseDto> result = new ArrayList<>();
+        List<Sell> all = sellRepository.findAll();
+        all.forEach(sell -> {
+            result.add(new SellResponseDto(sell.getMember().getNickname(), "",
+                    sell.getTitle(), sell.getItem().getPrice(), sell.getCreated()));
+        });
+        return result;
     }
 
     @Override

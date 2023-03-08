@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
-    public Item(Category category, Integer price) {
+    public Item (Category category, Integer price) {
         this.category = category;
         this.price = price;
     }

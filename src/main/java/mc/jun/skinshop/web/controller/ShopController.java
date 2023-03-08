@@ -1,7 +1,9 @@
 package mc.jun.skinshop.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import mc.jun.skinshop.domain.dto.shop.CreateSellDto;
+import lombok.extern.slf4j.Slf4j;
+import mc.jun.skinshop.domain.dto.shop.request.CreateSellDto;
+import mc.jun.skinshop.domain.dto.shop.response.SellResponseDto;
 import mc.jun.skinshop.domain.entity.member.Member;
 import mc.jun.skinshop.domain.entity.shop.Sell;
 import mc.jun.skinshop.domain.repository.MemberRepository;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/shop")
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class ShopController {
     private final MemberRepository memberRepository;
 
     @GetMapping
-    public List<Sell> getAll() {
+    public List<SellResponseDto> getAll() {
         return shopService.getAll();
     }
 
