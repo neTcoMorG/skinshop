@@ -1,6 +1,5 @@
 package mc.jun.skinshop.domain.entity.member;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class Member {
 
     private String nickname;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ViewHistory> viewHistoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -32,6 +31,5 @@ public class Member {
 
     public void addViewHistory (ViewHistory viewHistory) {
         viewHistoryList.add(viewHistory);
-        viewHistory.updateMember(this);
     }
 }
