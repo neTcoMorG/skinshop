@@ -1,4 +1,4 @@
-package mc.jun.skinshop.domain.dto.shop.request;
+package mc.jun.skinshop.domain.dto.shop.dto;
 
 
 import jakarta.annotation.Nullable;

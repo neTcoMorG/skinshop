@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth/naver")
 @RequiredArgsConstructor
-public class NaverOauth {
+public class NaverCallback {
 
     private final NaverAuthService authService;
 

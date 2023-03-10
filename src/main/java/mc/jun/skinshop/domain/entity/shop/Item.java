@@ -1,7 +1,9 @@
 package mc.jun.skinshop.domain.entity.shop;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +13,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
-    public Item (Category category, Integer price) {
-        this.category = category;
-        this.price = price;
-    }
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_ID")
-    private Category category;
+    public Item (String itemName, Integer price) {
+        if (price < 0)
+            throw new IllegalStateException("0보다 작은 값");
 
-    @NotNull
+        this.itemName = itemName;
+        this.price = price;
+    }
+
+    private String itemName;
     private Integer price;
 }

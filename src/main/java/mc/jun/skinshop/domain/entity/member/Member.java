@@ -4,32 +4,30 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import mc.jun.skinshop.domain.entity.shop.Sell;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    public Member(String nickname) {
-        this.nickname = nickname;
+    public Member(String name, String profileImgUrl) {
+        this.name = name;
+        this.profileImgUrl = profileImgUrl;
     }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickname;
+    private String name;
+    private String profileImgUrl;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ViewHistory> viewHistoryList = new ArrayList<>();
+    @CreatedDate
+    private LocalDateTime created;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Sell> sellList = new ArrayList<>();
-
-    public void addViewHistory (ViewHistory viewHistory) {
-        viewHistoryList.add(viewHistory);
-    }
+    
 }

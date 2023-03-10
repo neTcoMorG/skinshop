@@ -2,14 +2,8 @@ package mc.jun.skinshop.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mc.jun.skinshop.domain.dto.shop.request.CreateSellDto;
-import mc.jun.skinshop.domain.dto.shop.response.SellResponseDto;
-import mc.jun.skinshop.domain.entity.member.Member;
-import mc.jun.skinshop.domain.entity.shop.Sell;
-import mc.jun.skinshop.domain.repository.MemberRepository;
+import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.service.ShopService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,22 +16,21 @@ import java.util.List;
 public class ShopController {
 
     private final ShopService shopService;
-    private final MemberRepository memberRepository;
 
-    @GetMapping
-    public List<SellResponseDto> getAll() {
-        return shopService.getAll();
-    }
+//    @GetMapping
+//    public List<SellResponse> getAll() {
+//        return shopService.getAll();
+//    }
 
-    @PostMapping
-    public HttpEntity<?> createSell (@RequestBody CreateSellDto dto) {
-        Member member = memberRepository.findByNickname("조영준").orElseThrow();
-        shopService.createSell(member, dto);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping
+//    public HttpEntity<?> createSell (@RequestBody CreateSellDto dto) {
+//        Member member = memberRepository.findByNickname("조영준").orElseThrow();
+//        shopService.createSell(member, dto);
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("{memberName}")
-    public List<Sell> getCellByMemberName (@PathVariable(name = "memberName") String name) {
+    public List<Sale> getCellByMemberName (@PathVariable(name = "memberName") String name) {
         return new ArrayList<>();
     }
 }
