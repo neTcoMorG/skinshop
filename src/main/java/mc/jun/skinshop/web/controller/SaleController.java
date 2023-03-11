@@ -28,10 +28,16 @@ public class SaleController {
 
     @GetMapping
     public List<SaleInformationResponse> getAll () {
+        return createSaleInformationResponseList();
+    }
+
+    private List<SaleInformationResponse> createSaleInformationResponseList () {
         List<SaleInformationResponse> saleInformationResponses = new ArrayList<>();
+
         saleService.findAll().forEach(sale -> {
             saleInformationResponses.add(SaleInformationResponse.of(sale));
         });
+
         return saleInformationResponses;
     }
 

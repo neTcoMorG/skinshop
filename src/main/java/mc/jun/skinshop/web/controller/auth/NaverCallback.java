@@ -28,10 +28,8 @@ public class NaverCallback {
     private final MemberService memberService;
 
     @GetMapping
-    public String callback (@RequestParam String code) {
-        NaverAuth auth = authService.getAuth(code);
-        NaverProfile profile = authService.getProfile(auth.getAccess_token());
-
+    public String callback (@RequestParam String access_token) {
+        NaverProfile profile = authService.getProfile(access_token);
         Member createMember = memberService.create(mappedTo(profile));
         return jwtProvider.create(createMember.getId());
     }

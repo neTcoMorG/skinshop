@@ -26,10 +26,10 @@ public class SaleServiceImpl implements SaleService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException());
 
-        return saleRepository.save(new Sale(member.getShop(),
-                new Item(saleDto.getItem().getName(),
-                         saleDto.getItem().getPrice()),
-                saleDto.getText()));
+        return saleRepository.save(
+                new Sale(member.getShop(),
+                         saleDto.getItem().toEntity(),
+                         saleDto.getText()));
     }
 
     @Override

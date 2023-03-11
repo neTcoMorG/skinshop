@@ -1,6 +1,5 @@
 package mc.jun.skinshop.domain.dto.shop.dto;
 
-
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

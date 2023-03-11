@@ -32,7 +32,7 @@ public class Member {
     @CreatedDate
     private LocalDateTime created;
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Shop shop;
 
 }

@@ -1,12 +1,9 @@
 package mc.jun.skinshop.domain.entity.shop;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
 import mc.jun.skinshop.domain.entity.member.Member;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

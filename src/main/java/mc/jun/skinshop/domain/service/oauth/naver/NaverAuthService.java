@@ -2,6 +2,7 @@ package mc.jun.skinshop.domain.service.oauth.naver;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import mc.jun.skinshop.domain.exception.InvalidAccessTokenException;
 import mc.jun.skinshop.domain.service.oauth.AuthService;
 import mc.jun.skinshop.domain.service.oauth.naver.json.NaverAuth;
 import mc.jun.skinshop.domain.service.oauth.naver.json.NaverProfile;
@@ -62,7 +63,7 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
                 .uri(API_PROFILE_URI)
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError(), error -> Mono.error(RuntimeException::new))
+                .onStatus(status -> status.is4xxClientError(), error -> Mono.error(InvalidAccessTokenException::new))
                 .bodyToMono(NaverProfile.class)
                 .block();
     }
