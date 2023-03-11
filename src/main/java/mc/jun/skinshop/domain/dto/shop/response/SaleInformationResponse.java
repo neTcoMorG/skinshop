@@ -14,13 +14,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SaleInformationResponse {
 
+    private String name;
     private Long saleId;
     private Item item;
     private String text;
     private LocalDateTime created;
 
     public static SaleInformationResponse of (Sale sale) {
-        return new SaleInformationResponse(sale.getId(), sale.getItem(), sale.getText(), sale.getCreated());
+        return new SaleInformationResponse(
+                sale.getShop().getMember().getName(),
+                sale.getId(), sale.getItem(), sale.getText(),
+                sale.getCreated());
     }
 
 }

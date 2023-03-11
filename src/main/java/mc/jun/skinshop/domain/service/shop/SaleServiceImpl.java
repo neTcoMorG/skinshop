@@ -5,7 +5,6 @@ import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
 import mc.jun.skinshop.domain.entity.member.Member;
 import mc.jun.skinshop.domain.entity.shop.Item;
 import mc.jun.skinshop.domain.entity.shop.Sale;
-import mc.jun.skinshop.domain.entity.shop.Shop;
 import mc.jun.skinshop.domain.exception.MemberNotFoundException;
 import mc.jun.skinshop.domain.exception.SaleNotFoundException;
 import mc.jun.skinshop.domain.repository.MemberRepository;
@@ -27,23 +26,21 @@ public class SaleServiceImpl implements SaleService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException());
 
-        Sale save = saleRepository.save(new Sale(member.getShop(),
+        return saleRepository.save(new Sale(member.getShop(),
                 new Item(saleDto.getItem().getName(),
-                        saleDto.getItem().getPrice()),
+                         saleDto.getItem().getPrice()),
                 saleDto.getText()));
-        return save;
     }
 
     @Override
     public Sale findById (Long saleId) {
-        Sale findSale = saleRepository.findById(saleId).orElseThrow(
+        return saleRepository.findById(saleId).orElseThrow(
                 () -> new SaleNotFoundException());
-        return findSale;
     }
 
     @Override
     public List<Sale> findAll() {
-        return null;
+        return saleRepository.findAll();
     }
 
     @Override

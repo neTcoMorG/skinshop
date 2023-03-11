@@ -25,17 +25,6 @@ public class TokenArgumentResolver implements HandlerMethodArgumentResolver {
         return parameter.getParameterType().equals(Token.class);
     }
 
-    /**
-     *
-     * @param parameter the method parameter to resolve. This parameter must
-     * have previously been passed to {@link #supportsParameter} which must
-     * have returned {@code true}.
-     * @param mavContainer the ModelAndViewContainer for the current request
-     * @param webRequest the current request
-     * @param binderFactory a factory for creating {@link WebDataBinder} instances
-     * @return
-     * @throws Exception
-     */
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
