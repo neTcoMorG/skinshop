@@ -28,7 +28,7 @@ class ShopServiceImplTest {
     @Disabled
     void setup () {
         Member member = new Member("사용자", "a.com", "sdasd");
-        Shop mockShop = new Shop(member, LocalDateTime.now(), "사용자의 상점입니다");
+        Shop mockShop = new Shop(member, "사용자의 상점입니다");
 //        service = new ShopServiceImpl(shopRepository);
 
         given(this.shopRepository.findById(1L))

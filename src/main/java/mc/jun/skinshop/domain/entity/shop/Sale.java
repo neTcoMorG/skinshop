@@ -1,5 +1,6 @@
 package mc.jun.skinshop.domain.entity.shop;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

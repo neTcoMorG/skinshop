@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import mc.jun.skinshop.domain.entity.shop.Shop;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,5 +31,8 @@ public class Member {
 
     @CreatedDate
     private LocalDateTime created;
+
+    @OneToOne(mappedBy = "member")
+    private Shop shop;
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SaleService {
 
-    Sale create (Shop shopId, CreateSaleDto saleDto);
+    Sale create (Long memberId, CreateSaleDto saleDto);
     Sale findById (Long saleId);
     List<Sale> findAll ();
 

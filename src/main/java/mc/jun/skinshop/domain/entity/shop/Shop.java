@@ -1,5 +1,7 @@
 package mc.jun.skinshop.domain.entity.shop;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,9 +21,8 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Shop {
 
-    public Shop(Member member, LocalDateTime created, String hello) {
+    public Shop(Member member, String hello) {
         this.member = member;
-        this.created = created;
         this.hello = hello;
     }
 

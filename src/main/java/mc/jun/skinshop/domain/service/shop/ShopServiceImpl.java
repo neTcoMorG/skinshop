@@ -26,10 +26,14 @@ public class ShopServiceImpl implements ShopService {
         return ShopInformationResponse.of(findShop);
     }
 
+    /**
+     * @deprecated saleService 사용바람
+     * @param shopId
+     * @param dto
+     * @return
+     */
     @Override
     public Sale createSale(Long shopId, CreateSaleDto dto) {
-        Shop findShop = shopRepository.findById(shopId).orElseThrow(
-                () -> new ShopNotFoundException());
-        return saleService.create(findShop, dto);
+        return null;
     }
 }

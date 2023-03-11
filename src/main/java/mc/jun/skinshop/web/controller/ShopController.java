@@ -19,4 +19,9 @@ public class ShopController {
         return shopService.findById(shopId);
     }
 
+
+    // TODO 상점 수정
+    public void modifyShop () {
+
+    }
 }
