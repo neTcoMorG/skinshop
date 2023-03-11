@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    public Member(String name, String profileImgUrl) {
+    public Member (String name, String profileImgUrl) {
         this.name = name;
         this.profileImgUrl = profileImgUrl;
     }
@@ -24,10 +24,10 @@ public class Member {
     private Long id;
 
     private String name;
+
     private String profileImgUrl;
 
     @CreatedDate
     private LocalDateTime created;
 
-    
 }

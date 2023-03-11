@@ -46,14 +46,13 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
                 .block();
     }
 
-    private MultiValueMap<String, String> createTokenRequestForm(String code) {
+    private MultiValueMap<String, String> createTokenRequestForm (String code) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", CLIENT_ID);
         params.add("redirect_uri", REDIRECT_URI);
         params.add("code", code);
         params.add("client_secret", SECRET);
-
         return params;
     }
 

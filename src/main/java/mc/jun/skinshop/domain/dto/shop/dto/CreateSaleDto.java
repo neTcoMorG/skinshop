@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateSellDto {
+public class CreateSaleDto {
 
-    public CreateSellDto(String title, String text, ItemDto item) {
+    public CreateSaleDto(String title, String text, ItemDto item) {
         this.title = title;
         this.text = text;
         this.item = item;
