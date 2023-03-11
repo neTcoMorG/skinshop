@@ -58,6 +58,12 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
 
     @Override
     public NaverProfile getProfile(String accessToken) {
-        return null;
+        return webClient.get()
+                .uri(API_PROFILE_URI)
+                .header("Authorization", "Bearer " + accessToken)
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError(), error -> Mono.error(RuntimeException::new))
+                .bodyToMono(NaverProfile.class)
+                .block();
     }
 }

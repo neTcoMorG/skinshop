@@ -3,12 +3,8 @@ package mc.jun.skinshop.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mc.jun.skinshop.domain.dto.shop.response.ShopInformationResponse;
-import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.service.shop.inf.ShopService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,4 +18,5 @@ public class ShopController {
     public ShopInformationResponse getShopById (@PathVariable Long shopId) {
         return shopService.findById(shopId);
     }
+
 }

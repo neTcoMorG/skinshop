@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NaverProfile {
-    private Response response;
-    private String resultCode;
-    private String message;
+@AllArgsConstructor
+public class Response {
+    private String nickname;
+    private String email;
+    private String profile_image;
 }

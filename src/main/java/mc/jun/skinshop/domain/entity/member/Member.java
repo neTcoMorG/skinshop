@@ -15,16 +15,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    public Member (String name, String profileImgUrl) {
+    public Member (String name, String profileImgUrl, String email) {
         this.name = name;
         this.profileImgUrl = profileImgUrl;
+        this.email = email;
     }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
+    private String email;
     private String profileImgUrl;
 
     @CreatedDate

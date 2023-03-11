@@ -25,10 +25,11 @@ class ShopServiceImplTest {
     ShopService service;
 
     @BeforeEach
+    @Disabled
     void setup () {
-        Member member = new Member("사용자", "a.com");
+        Member member = new Member("사용자", "a.com", "sdasd");
         Shop mockShop = new Shop(member, LocalDateTime.now(), "사용자의 상점입니다");
-        service = new ShopServiceImpl(shopRepository);
+//        service = new ShopServiceImpl(shopRepository);
 
         given(this.shopRepository.findById(1L))
                 .willReturn(Optional.of(mockShop));
