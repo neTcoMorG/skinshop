@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class SaleController {
                                      @RequestPart("token") String token) {
 
         Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject().toString());
-        Sale createSale = saleService.create(memberId, createSaleDto);
+        Sale createSale = saleService.create(memberId, createSaleDto, images);
         return ResponseEntity.ok(createSale.getId());
     }
 

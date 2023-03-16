@@ -9,10 +9,13 @@ import mc.jun.skinshop.domain.exception.MemberNotFoundException;
 import mc.jun.skinshop.domain.exception.SaleNotFoundException;
 import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.repository.SaleRepository;
+import mc.jun.skinshop.domain.service.file.FileService;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -21,12 +24,15 @@ public class SaleServiceImpl implements SaleService {
 
     private final SaleRepository saleRepository;
     private final MemberRepository memberRepository;
+    private final FileService fileService;
 
     @Override
     @Transactional
-    public Sale create (Long memberId, CreateSaleDto saleDto) {
+    public Sale create (Long memberId, CreateSaleDto saleDto, List<MultipartFile> images) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException());
+
+        fileService.save(images);
 
         return saleRepository.save(
                 new Sale(member.getShop(),
@@ -36,8 +42,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public Sale findById (Long saleId) {
-        return saleRepository.findById(saleId).orElseThrow(
-                () -> new SaleNotFoundException());
+        return validateSaleId(saleId);
     }
 
     @Override
@@ -47,6 +52,16 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public void delete (Long memberId, Long saleId) {
-        
+        Sale sale = validateSaleId(saleId);
+
+        if (sale.getShop().isOwner(memberId)) {
+
+        }
+    }
+
+    private Sale validateSaleId (Long saleId) {
+        Sale sale = saleRepository.findById(saleId).orElseThrow(
+                () -> new SaleNotFoundException());
+        return sale;
     }
 }

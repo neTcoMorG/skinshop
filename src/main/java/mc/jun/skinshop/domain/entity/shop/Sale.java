@@ -1,6 +1,5 @@
 package mc.jun.skinshop.domain.entity.shop;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -37,8 +38,15 @@ public class Sale {
     @JoinColumn(name = "ITEM_ID")
     private Item item;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
+
     @CreatedDate
     private LocalDateTime created;
 
     private String text;
+
+    public void addImage (Image image) {
+        this.images.add(image);
+    }
 }

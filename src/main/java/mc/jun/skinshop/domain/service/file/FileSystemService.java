@@ -1,36 +1,49 @@
 package mc.jun.skinshop.domain.service.file;
 
 import jakarta.annotation.PostConstruct;
-import mc.jun.skinshop.domain.exception.FileDuplicateException;
+import lombok.RequiredArgsConstructor;
+import mc.jun.skinshop.domain.exception.FileSaveException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FileSystemService implements FileService {
 
     @Value("${file.path}") private String savePath;
 
     @PostConstruct
     private void init () {
+        System.out.println("[value]" + this.savePath);
         File dir = new File(this.savePath);
         if (!dir.exists())
             dir.mkdirs();
     }
 
     @Override
-    public void save (File file) throws FileDuplicateException {
-        String ext = getExt(file.getName());
-        String fileUUID = UUID.randomUUID().toString();
-        File dst = new File(savePath + fileUUID + ext);
+    public void save(MultipartFile file) throws FileSaveException {
+        try {
+            file.transferTo(new File(getFullPath(file.getOriginalFilename())));
+        } catch (IOException e) {
+            throw new FileSaveException();
+        }
+    }
 
-        file.renameTo(dst);
-        file.delete();
+    @Override
+    public void save (List<MultipartFile> files) {
+        files.forEach(file -> {
+            try {
+                file.transferTo(new File(getFullPath(file.getOriginalFilename())));
+            } catch (IOException e) {
+                throw new FileSaveException();
+            }
+        });
     }
 
     @Override
@@ -43,8 +56,8 @@ public class FileSystemService implements FileService {
 
     }
 
-    private String createPath (String fileName) {
-        return "";
+    private String getFullPath (String fileName) {
+        return savePath + UUID.randomUUID() + "." + getExt(fileName);
     }
 
     private String getExt (String fileName) {

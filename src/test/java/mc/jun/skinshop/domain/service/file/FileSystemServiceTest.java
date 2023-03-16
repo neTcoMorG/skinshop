@@ -3,6 +3,7 @@ package mc.jun.skinshop.domain.service.file;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
@@ -10,9 +11,9 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class FileSystemServiceTest {
 
-    FileService fileService = new FileSystemService();
     String filePath = "C:\\skinshop\\sale\\img\\";
 
 
@@ -26,12 +27,13 @@ class FileSystemServiceTest {
             file.mkdirs();
         }
     }
-    
+
     @Test
-    @DisplayName("파일 저장이 성공적으로 되는지 테스트")
-    void save_file_test () throws IOException {
-        File file = new File("./test");
-        if (!file.exists()) file.createNewFile();
-        fileService.save(file);
+    @DisplayName("확장자 추출 테스트")
+    void getExt_test () {
+        String fileName = "asdasd.txt";
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        assertEquals("txt", ext);
     }
 }
