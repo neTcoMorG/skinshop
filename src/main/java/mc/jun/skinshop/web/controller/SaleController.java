@@ -6,9 +6,11 @@ import mc.jun.skinshop.domain.dto.shop.dto.Token;
 import mc.jun.skinshop.domain.dto.shop.response.SaleInformationResponse;
 import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
+import mc.jun.skinshop.domain.util.JwtProvider;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +21,27 @@ import java.util.List;
 public class SaleController {
 
     private final SaleService saleService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping
-    public HttpEntity<?> createSale (@RequestBody CreateSaleDto createSaleDto, Token token) {
-        Sale createSale = saleService.create(token.getMemberId(), createSaleDto);
+    public HttpEntity<?> createSale (@RequestPart("sellObject") CreateSaleDto createSaleDto,
+                                     @RequestPart("images") List<MultipartFile> images,
+                                     @RequestPart("token") String token) {
+
+        Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject().toString());
+        Sale createSale = saleService.create(memberId, createSaleDto);
         return ResponseEntity.ok(createSale.getId());
     }
 
     @GetMapping
     public List<SaleInformationResponse> getAll () {
         return createSaleInformationResponseList();
+    }
+
+    @GetMapping("{saleId}")
+    public SaleInformationResponse getSale (@PathVariable Long saleId) {
+        Sale findSale = saleService.findById(saleId);
+        return SaleInformationResponse.of(findSale);
     }
 
     private List<SaleInformationResponse> createSaleInformationResponseList () {
@@ -39,11 +52,5 @@ public class SaleController {
         });
 
         return saleInformationResponses;
-    }
-
-    @GetMapping("{saleId}")
-    public SaleInformationResponse getSale (@PathVariable Long saleId) {
-        Sale findSale = saleService.findById(saleId);
-        return SaleInformationResponse.of(findSale);
     }
 }

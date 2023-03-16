@@ -8,6 +8,7 @@ import mc.jun.skinshop.domain.exception.MemberNotFoundException;
 import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.repository.ShopRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class MemberServiceImplNaver implements MemberService {
     private final ShopRepository shopRepository;
 
     @Override
+    @Transactional
     public Member create (MemberProfileDto profile) {
         if(!isExits(profile)) {
             Member createMember = memberRepository.save(new Member(profile.getName(), profile.getImage_url(),

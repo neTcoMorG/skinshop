@@ -1,6 +1,8 @@
 package mc.jun.skinshop.domain.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.MalformedJwtException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +19,18 @@ class JwtProviderTest {
     JwtProvider jwtProvider;
 
     @Test
-    @DisplayName("토큰 생성 테스트")
+    @DisplayName("토큰 생성 후 파싱 테스트")
     void create_token_test () {
         String token = jwtProvider.create(1L);
-        jwtProvider.parseToken("Bearer " + token);
-        System.out.println(token);
+        Claims claims = jwtProvider.parseToken("Bearer " + token);
+        assertEquals(1L, Long.parseLong(claims.getSubject().toString()));
     }
     
     @Test
-    @DisplayName("유효하지 않은 토큰 테스트")
+    @DisplayName("유효하지 않은 토큰 예외 발생 테스트")
     void invalid_token_test () {
         String token = jwtProvider.create(1L);
         String finalToken = token + "dummyText";
-        assertThrows(MalformedJwtException.class, ()->jwtProvider.parseToken(finalToken));
+        assertThrows(MalformedJwtException.class, ()-> jwtProvider.parseToken(finalToken));
     }
 }

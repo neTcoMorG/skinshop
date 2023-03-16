@@ -19,6 +19,6 @@ class NaverAuthServiceTest {
     @DisplayName("엑세스 토큰 발급 테스트")
     void getAccessTokenTest() {
         NaverAuth auth = naverAuthService.getAuth("uT2Kogm5YPNgPh06CR");
-        System.out.println(auth.toString());
+        System.out.println(auth.getAccess_token());
     }
 }

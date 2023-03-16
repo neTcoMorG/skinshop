@@ -1,6 +1,7 @@
 #https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=SvRMXugk0nIr7rCrxnCa&redirect_uri=http://localhost:8080/auth/naver
 oauth:
   naver:
+    page: https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=SvRMXugk0nIr7rCrxnCa&redirect_uri=http://localhost:8080/auth/naver
     callback: http://localhost:8080/auth/naver
     key: SvRMXugk0nIr7rCrxnCa
     secret: 4eQcs9TmmL

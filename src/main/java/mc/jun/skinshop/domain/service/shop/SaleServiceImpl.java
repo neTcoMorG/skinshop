@@ -11,6 +11,7 @@ import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.repository.SaleRepository;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class SaleServiceImpl implements SaleService {
     private final MemberRepository memberRepository;
 
     @Override
+    @Transactional
     public Sale create (Long memberId, CreateSaleDto saleDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException());

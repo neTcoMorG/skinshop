@@ -48,7 +48,7 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
     }
 
     private MultiValueMap<String, String> createTokenRequestForm (String code) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(); // TODO spring 의존 객체 -> 수정 해야함
         params.add("grant_type", "authorization_code");
         params.add("client_id", CLIENT_ID);
         params.add("redirect_uri", REDIRECT_URI);
