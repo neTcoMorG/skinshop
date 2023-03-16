@@ -1,8 +1,10 @@
 package mc.jun.skinshop.domain.service.shop;
 
 import lombok.RequiredArgsConstructor;
+import mc.jun.skinshop.domain.dto.ImageSaveInformation;
 import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
 import mc.jun.skinshop.domain.entity.member.Member;
+import mc.jun.skinshop.domain.entity.shop.Image;
 import mc.jun.skinshop.domain.entity.shop.Item;
 import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.exception.MemberNotFoundException;
@@ -32,12 +34,16 @@ public class SaleServiceImpl implements SaleService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotFoundException());
 
-        fileService.save(images);
+        List<ImageSaveInformation> save = fileService.save(images);
 
-        return saleRepository.save(
+        Sale createSale = saleRepository.save(
                 new Sale(member.getShop(),
-                         saleDto.getItem().toEntity(),
-                         saleDto.getText()));
+                        saleDto.getItem().toEntity(),
+                        saleDto.getText()));
+
+        save.forEach(s -> createSale.addImage(new Image(createSale, s.getUuid(), s.getFullPath())));
+
+        return createSale;
     }
 
     @Override

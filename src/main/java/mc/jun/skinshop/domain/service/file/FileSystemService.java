@@ -1,20 +1,25 @@
 package mc.jun.skinshop.domain.service.file;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import mc.jun.skinshop.domain.dto.ImageSaveInformation;
 import mc.jun.skinshop.domain.exception.FileSaveException;
+import mc.jun.skinshop.domain.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class FileSystemService implements FileService {
+
+    private final ImageRepository imageRepository;
 
     @Value("${file.path}") private String savePath;
 
@@ -27,23 +32,33 @@ public class FileSystemService implements FileService {
     }
 
     @Override
-    public void save(MultipartFile file) throws FileSaveException {
+    public ImageSaveInformation save(MultipartFile file) throws FileSaveException {
+        ImageSaveInformation imageSaveInformation = createImageInformation(file.getOriginalFilename());
         try {
-            file.transferTo(new File(getFullPath(file.getOriginalFilename())));
-        } catch (IOException e) {
+            file.transferTo(new File(imageSaveInformation.getFullPath()));
+        }
+        catch (IOException e) {
             throw new FileSaveException();
         }
+        return imageSaveInformation;
     }
 
     @Override
-    public void save (List<MultipartFile> files) {
+    public List<ImageSaveInformation> save (List<MultipartFile> files) {
+        List<ImageSaveInformation> result = new ArrayList<>();
+
         files.forEach(file -> {
+            ImageSaveInformation imageSaveInformation = createImageInformation(file.getOriginalFilename());
+
             try {
-                file.transferTo(new File(getFullPath(file.getOriginalFilename())));
+                file.transferTo(new File(imageSaveInformation.getFullPath()));
+                result.add(imageSaveInformation);
             } catch (IOException e) {
                 throw new FileSaveException();
             }
         });
+
+        return result;
     }
 
     @Override
@@ -56,11 +71,14 @@ public class FileSystemService implements FileService {
 
     }
 
-    private String getFullPath (String fileName) {
-        return savePath + UUID.randomUUID() + "." + getExt(fileName);
+    private ImageSaveInformation createImageInformation (String fileName) {
+        String uuid = UUID.randomUUID().toString();
+        return new ImageSaveInformation(uuid,
+                savePath + uuid + "." + getExt(fileName));
     }
 
     private String getExt (String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
+
 }
