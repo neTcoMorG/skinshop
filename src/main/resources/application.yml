@@ -1,4 +1,8 @@
 #https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=SvRMXugk0nIr7rCrxnCa&redirect_uri=http://localhost:8080/auth/naver
+
+file:
+  path: C:\\skinshop\\sale\\img\\
+
 oauth:
   naver:
     page: https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=SvRMXugk0nIr7rCrxnCa&redirect_uri=http://localhost:8080/auth/naver
