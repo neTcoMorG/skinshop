@@ -24,13 +24,13 @@ public class DateUtil {
         String msg = null;
 
         if (diffTime < SEC){
-            msg = diffTime + "초전";
+            msg = diffTime + "초 전";
         } else if ((diffTime /= SEC) < MIN) {
             msg = diffTime + "분 전";
         } else if ((diffTime /= MIN) < HOUR) {
             msg = (diffTime) + "시간 전";
         } else if ((diffTime /= HOUR) < DAY) {
-            msg = (diffTime) + "일 전";
+            msg = (diffTime) + "일전";
         } else if ((diffTime /= DAY) < MONTH) {
             msg = (diffTime) + "개월 전";
         } else {

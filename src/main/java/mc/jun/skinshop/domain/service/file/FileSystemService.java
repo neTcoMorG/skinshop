@@ -3,7 +3,9 @@ package mc.jun.skinshop.domain.service.file;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
 import mc.jun.skinshop.domain.dto.ImageSaveInformation;
+import mc.jun.skinshop.domain.entity.shop.Image;
 import mc.jun.skinshop.domain.exception.FileSaveException;
+import mc.jun.skinshop.domain.exception.ImageNotFoundException;
 import mc.jun.skinshop.domain.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -62,8 +64,10 @@ public class FileSystemService implements FileService {
     }
 
     @Override
-    public File get(String fileName) {
-        return null;
+    public Image getByUuid (String gid) {
+        Image findImage = imageRepository.findByUuid(gid).orElseThrow(
+                () -> new ImageNotFoundException());
+        return findImage;
     }
 
     @Override
