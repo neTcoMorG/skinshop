@@ -13,6 +13,7 @@ import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.repository.SaleRepository;
 import mc.jun.skinshop.domain.service.file.FileService;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,8 +53,8 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<Sale> findAll() {
-        return saleRepository.findAll();
+    public List<Sale> findAll(Sort sort) {
+        return saleRepository.findAll(sort);
     }
 
     @Override

@@ -7,6 +7,7 @@ import mc.jun.skinshop.domain.dto.shop.response.SaleInformationResponse;
 import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import mc.jun.skinshop.domain.util.JwtProvider;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +50,8 @@ public class SaleController {
     private List<SaleInformationResponse> createSaleInformationResponseList () {
         List<SaleInformationResponse> saleInformationResponses = new ArrayList<>();
 
-        saleService.findAll().forEach(sale -> {
-            saleInformationResponses.add(SaleInformationResponse.of(sale));
-        });
+        saleService.findAll(Sort.by(Sort.Direction.DESC, "created")).forEach(sale ->
+            saleInformationResponses.add(SaleInformationResponse.of(sale)));
 
         return saleInformationResponses;
     }
