@@ -29,7 +29,7 @@ public class SaleController {
     @PostMapping
     public HttpEntity<?> createSale (@RequestPart("sellObject") CreateSaleDto createSaleDto,
                                      @RequestPart("images") List<MultipartFile> images,
-                                     @RequestPart("token") String token) {
+                                     @RequestPart(value = "token", required = false) String token) {
 
         Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject().toString());
         Sale createSale = saleService.create(memberId, createSaleDto, images);

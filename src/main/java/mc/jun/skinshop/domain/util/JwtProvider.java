@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import mc.jun.skinshop.domain.exception.NullTokenException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,9 @@ public class JwtProvider {
     }
 
     private String BearerRemove (String token) {
-        return token.substring("Bearer ".length());
+        if (token.isBlank() && token.contains("Bearer")) {
+            return token.substring("Bearer ".length());
+        }
+        throw new NullTokenException();
     }
 }

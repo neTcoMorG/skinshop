@@ -38,7 +38,7 @@ public class Sale {
     @JoinColumn(name = "ITEM_ID")
     private Item item;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     @CreatedDate

@@ -4,12 +4,10 @@ import mc.jun.skinshop.domain.dto.ImageSaveInformation;
 import mc.jun.skinshop.domain.entity.shop.Image;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 public interface FileService {
     List<ImageSaveInformation> save (List<MultipartFile> files);
-    ImageSaveInformation save (MultipartFile file);
     Image getByUuid (String gid);
     void delete (String fileName);
 }

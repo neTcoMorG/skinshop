@@ -34,18 +34,6 @@ public class FileSystemService implements FileService {
     }
 
     @Override
-    public ImageSaveInformation save(MultipartFile file) throws FileSaveException {
-        ImageSaveInformation imageSaveInformation = createImageInformation(file.getOriginalFilename());
-        try {
-            file.transferTo(new File(imageSaveInformation.getFullPath()));
-        }
-        catch (IOException e) {
-            throw new FileSaveException();
-        }
-        return imageSaveInformation;
-    }
-
-    @Override
     public List<ImageSaveInformation> save (List<MultipartFile> files) {
         List<ImageSaveInformation> result = new ArrayList<>();
 

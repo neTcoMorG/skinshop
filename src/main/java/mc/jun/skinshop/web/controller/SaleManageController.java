@@ -15,7 +15,7 @@ import java.util.List;
 public class SaleManageController {
 
     @GetMapping
-    public List<SaleManageInformationResponse> getManageInfromationList () {
+    public List<SaleManageInformationResponse> getManageInformationList () {
         return new ArrayList<>();
     }
 }
