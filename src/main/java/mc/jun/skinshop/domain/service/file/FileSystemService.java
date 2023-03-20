@@ -54,7 +54,7 @@ public class FileSystemService implements FileService {
     @Override
     public Image getByUuid (String gid) {
         Image findImage = imageRepository.findByUuid(gid).orElseThrow(
-                () -> new ImageNotFoundException());
+                () -> new ImageNotFoundException("CAUSE BY > FileSystemService.getByUuid()"));
         return findImage;
     }
 

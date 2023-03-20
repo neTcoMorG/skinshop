@@ -29,7 +29,7 @@ public class TokenArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         if (request.getHeader(HttpHeaders.AUTHORIZATION) == null)
-            throw new NullTokenException();
+            throw new NullTokenException("cause by resolveArgument() ");
 
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         Claims claims = jwtProvider.parseToken(authorization);

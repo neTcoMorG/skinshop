@@ -40,9 +40,9 @@ public class JwtProvider {
     }
 
     private String BearerRemove (String token) {
-        if (token.isBlank() && token.contains("Bearer")) {
+        if (!token.isBlank() && token.contains("Bearer")) {
             return token.substring("Bearer ".length());
         }
-        throw new NullTokenException();
+        throw new NullTokenException("cause by BearerRemove");
     }
 }

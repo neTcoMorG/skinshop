@@ -61,7 +61,7 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
     public NaverProfile getProfile(String accessToken) {
         return webClient.get()
                 .uri(API_PROFILE_URI)
-                .header("Authorization", "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError(), error -> Mono.error(InvalidAccessTokenException::new))
                 .bodyToMono(NaverProfile.class)

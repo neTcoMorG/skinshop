@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class JwtExceptionHandler {
 
-
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(MalformedJwtException.class)
-    public void malformedJwtExceptionHandler (RuntimeException ex) { log.info("오염된 토큰"); }
+    public void malformedJwtExceptionHandler (RuntimeException ex) { log.info(ex.getMessage()); }
 }

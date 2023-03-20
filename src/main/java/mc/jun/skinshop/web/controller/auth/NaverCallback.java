@@ -38,13 +38,6 @@ public class NaverCallback {
         return jwtProvider.create(createMember.getId());
     }
 
-//    @GetMapping
-//    public String callback (@RequestParam String access_token) {
-//        NaverProfile profile = authService.getProfile(access_token);
-//        Member createMember = memberService.create(mappedTo(profile));
-//        return jwtProvider.create(createMember.getId());
-//    }
-
     private MemberProfileDto mappedTo (NaverProfile naverProfile) {
         return new MemberProfileDto(naverProfile.getResponse().getNickname(),
                 naverProfile.getResponse().getEmail(),

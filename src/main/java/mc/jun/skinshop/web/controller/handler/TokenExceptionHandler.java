@@ -17,7 +17,6 @@ public class TokenExceptionHandler {
     @ResponseStatus(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
     @ExceptionHandler(NullTokenException.class)
     public void nullTokenExceptionHandler (NullTokenException ex, HttpServletResponse response) throws IOException {
-        response.sendRedirect("http://naver.com");
-        log.info("[Token] 요청에 토큰이 없습니다");
+        log.info("[Token] " + ex.getMessage());
     }
 }
