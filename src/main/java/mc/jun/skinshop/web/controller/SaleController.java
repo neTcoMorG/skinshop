@@ -40,7 +40,7 @@ public class SaleController {
     }
 
     @GetMapping
-    public List<SaleInformationResponse> getAll () {
+    public List<SaleInformationResponse> getPreviewAll () {
         return createSaleInformationResponseList();
     }
 

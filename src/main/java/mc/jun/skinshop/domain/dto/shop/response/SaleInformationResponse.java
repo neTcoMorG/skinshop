@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SaleInformationResponse {
 
-    public SaleInformationResponse(String name, Long saleId, Item item, String text, LocalDateTime created,
+    public SaleInformationResponse (String name, Long saleId, Item item, String text, LocalDateTime created,
                                    List<String> images_uuid) {
         this.name = name;
         this.saleId = saleId;

@@ -1,9 +1,15 @@
 package mc.jun.skinshop.web.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mc.jun.skinshop.domain.dto.shop.response.ShopInformationResponse;
+import mc.jun.skinshop.domain.entity.member.Member;
+import mc.jun.skinshop.domain.exception.MemberNotFoundException;
+import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.service.shop.inf.ShopService;
+import mc.jun.skinshop.domain.util.JwtProvider;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -13,6 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class ShopController {
 
     private final ShopService shopService;
+    private final JwtProvider provider;
+    private final MemberRepository memberRepository;
+
+    @GetMapping
+    public ShopInformationResponse getShop (HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Member findMember = memberRepository.findById(getMemberIdByToken(token)).orElseThrow(
+                () -> new MemberNotFoundException());
+
+        return getShopById(findMember.getShop().getId());
+    }
 
     @GetMapping("{shopId}")
     public ShopInformationResponse getShopById (@PathVariable Long shopId) {
@@ -22,5 +39,9 @@ public class ShopController {
     // TODO 상점 수정
     public void modifyShop () {
 
+    }
+
+    private Long getMemberIdByToken (String token) {
+        return Long.parseLong(provider.parseToken(token).getSubject().toString());
     }
 }
