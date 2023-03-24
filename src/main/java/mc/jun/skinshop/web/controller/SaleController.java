@@ -3,8 +3,8 @@ package mc.jun.skinshop.web.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
-import mc.jun.skinshop.domain.dto.shop.dto.Token;
 import mc.jun.skinshop.domain.dto.shop.response.SaleInformationResponse;
+import mc.jun.skinshop.domain.dto.shop.response.SalePreviewInformationResponse;
 import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import mc.jun.skinshop.domain.util.JwtProvider;
@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +38,8 @@ public class SaleController {
     }
 
     @GetMapping
-    public List<SaleInformationResponse> getPreviewAll () {
-        return createSaleInformationResponseList();
+    public List<SalePreviewInformationResponse> getPreviewAll () {
+        return createSalePreviewInformationResponseList();
     }
 
     @GetMapping("{saleId}")
@@ -50,11 +48,11 @@ public class SaleController {
         return SaleInformationResponse.of(findSale);
     }
 
-    private List<SaleInformationResponse> createSaleInformationResponseList () {
-        List<SaleInformationResponse> saleInformationResponses = new ArrayList<>();
+    private List<SalePreviewInformationResponse> createSalePreviewInformationResponseList () {
+        List<SalePreviewInformationResponse> saleInformationResponses = new ArrayList<>();
 
         saleService.findAll(Sort.by(Sort.Direction.DESC, "created")).forEach(sale ->
-            saleInformationResponses.add(SaleInformationResponse.of(sale)));
+            saleInformationResponses.add(SalePreviewInformationResponse.of(sale)));
 
         return saleInformationResponses;
     }

@@ -41,5 +41,4 @@ public class SaleInformationResponse {
                 sale.getId(), sale.getItem(), sale.getText(),
                 sale.getCreated(), images_uuid);
     }
-
 }
