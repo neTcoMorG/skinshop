@@ -1,6 +1,6 @@
 package mc.jun.skinshop.domain.service.file;
 
-import mc.jun.skinshop.domain.dto.ImageSaveInformation;
+import mc.jun.skinshop.domain.dto.shop.ImageSaveInformation;
 import mc.jun.skinshop.domain.entity.shop.Image;
 import org.springframework.web.multipart.MultipartFile;
 

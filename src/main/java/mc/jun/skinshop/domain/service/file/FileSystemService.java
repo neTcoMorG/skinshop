@@ -2,7 +2,7 @@ package mc.jun.skinshop.domain.service.file;
 
 import jakarta.annotation.PostConstruct;
 import lombok.*;
-import mc.jun.skinshop.domain.dto.ImageSaveInformation;
+import mc.jun.skinshop.domain.dto.shop.ImageSaveInformation;
 import mc.jun.skinshop.domain.entity.shop.Image;
 import mc.jun.skinshop.domain.exception.FileSaveException;
 import mc.jun.skinshop.domain.exception.ImageNotFoundException;
@@ -27,8 +27,8 @@ public class FileSystemService implements FileService {
 
     @PostConstruct
     private void init () {
-        System.out.println("[value]" + this.savePath);
         File dir = new File(this.savePath);
+
         if (!dir.exists())
             dir.mkdirs();
     }
@@ -43,7 +43,8 @@ public class FileSystemService implements FileService {
             try {
                 file.transferTo(new File(imageSaveInformation.getFullPath()));
                 result.add(imageSaveInformation);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new FileSaveException();
             }
         });

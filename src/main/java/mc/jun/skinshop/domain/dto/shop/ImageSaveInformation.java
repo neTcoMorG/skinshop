@@ -1,4 +1,4 @@
-package mc.jun.skinshop.domain.dto;
+package mc.jun.skinshop.domain.dto.shop;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

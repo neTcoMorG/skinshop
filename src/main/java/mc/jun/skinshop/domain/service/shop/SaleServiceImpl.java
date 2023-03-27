@@ -1,7 +1,7 @@
 package mc.jun.skinshop.domain.service.shop;
 
 import lombok.RequiredArgsConstructor;
-import mc.jun.skinshop.domain.dto.ImageSaveInformation;
+import mc.jun.skinshop.domain.dto.shop.ImageSaveInformation;
 import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
 import mc.jun.skinshop.domain.entity.member.Member;
 import mc.jun.skinshop.domain.entity.shop.Image;
@@ -13,6 +13,8 @@ import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.repository.SaleRepository;
 import mc.jun.skinshop.domain.service.file.FileService;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +36,7 @@ public class SaleServiceImpl implements SaleService {
         if (isSizeOverflow(images))
             throw new SizeOverflowException("SaleServiceImpl -> create()");
 
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException());
-
+        Member member = getExistMember(memberId);
         List<ImageSaveInformation> save = fileService.save(images);
 
         Sale createSale = saleRepository.save(
@@ -44,7 +44,7 @@ public class SaleServiceImpl implements SaleService {
                         saleDto.getItem().toEntity(),
                         saleDto.getText()));
 
-        save.forEach(s -> createSale.addImage(new Image(createSale, s.getUuid(), s.getFullPath())));
+//        save.forEach(s -> createSale.addImage(new Image(createSale, s.getUuid(), s.getFullPath())));
         return createSale;
     }
 
@@ -54,8 +54,8 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<Sale> findAll(Sort sort) {
-        return saleRepository.findAll(sort);
+    public Page<Sale> findAll(Pageable pageable) {
+        return saleRepository.findAll(pageable);
     }
 
     @Override
@@ -74,5 +74,10 @@ public class SaleServiceImpl implements SaleService {
         Sale sale = saleRepository.findById(saleId).orElseThrow(
                 () -> new SaleNotFoundException());
         return sale;
+    }
+
+    private Member getExistMember (Long id) {
+        return memberRepository.findById(id).orElseThrow(
+                () -> new MemberNotFoundException());
     }
 }

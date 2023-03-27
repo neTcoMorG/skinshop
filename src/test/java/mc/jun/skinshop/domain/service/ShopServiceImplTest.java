@@ -39,7 +39,7 @@ class ShopServiceImplTest {
     @DisplayName("상점 Response 응답 생성 테스트")
     void 상점_응답_테스트() {
         Shop findShop = shopRepository.findById(1L).orElseThrow();
-        ShopInformationResponse info = service.findById(1L);
+        ShopInformationResponse info = ShopInformationResponse.of(service.findById(1L));
 
         assertNotNull(info);
         assertEquals(info.getShop_id(), findShop.getId());

@@ -1,4 +1,4 @@
-package mc.jun.skinshop.web.controller;
+package mc.jun.skinshop.web.controller.shop;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,9 @@ import mc.jun.skinshop.domain.dto.shop.response.SalePreviewInformationResponse;
 import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import mc.jun.skinshop.domain.util.JwtProvider;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +40,9 @@ public class SaleController {
     }
 
     @GetMapping
-    public List<SalePreviewInformationResponse> getPreviewAll () {
-        return createSalePreviewInformationResponseList();
+    public List<SalePreviewInformationResponse> getPreview (Pageable pageable) {
+
+        return getSalePreviewInformationResponseList(pageable);
     }
 
     @GetMapping("{saleId}")
@@ -48,10 +51,10 @@ public class SaleController {
         return SaleInformationResponse.of(findSale);
     }
 
-    private List<SalePreviewInformationResponse> createSalePreviewInformationResponseList () {
+    private List<SalePreviewInformationResponse> getSalePreviewInformationResponseList (Pageable pageable) {
         List<SalePreviewInformationResponse> saleInformationResponses = new ArrayList<>();
 
-        saleService.findAll(Sort.by(Sort.Direction.DESC, "created")).forEach(sale ->
+        saleService.findAll(pageable).forEach(sale ->
             saleInformationResponses.add(SalePreviewInformationResponse.of(sale)));
 
         return saleInformationResponses;

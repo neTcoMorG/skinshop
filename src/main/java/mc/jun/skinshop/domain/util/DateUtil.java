@@ -15,25 +15,19 @@ public class DateUtil {
 
     public static String calcDate (LocalDateTime ldt) {
         Date tempDate = Timestamp.valueOf(ldt);
+
         long curTime = System.currentTimeMillis();
-
         long regTime = tempDate.getTime();
-
         long diffTime = (curTime - regTime) / 1000;
 
         String msg = null;
 
-        if (diffTime < SEC){
-            msg = diffTime + "초 전";
-        } else if ((diffTime /= SEC) < MIN) {
-            msg = diffTime + "분 전";
-        } else if ((diffTime /= MIN) < HOUR) {
-            msg = (diffTime) + "시간 전";
-        } else if ((diffTime /= HOUR) < DAY) {
-            msg = (diffTime) + "일전";
-        } else if ((diffTime /= DAY) < MONTH) {
-            msg = (diffTime) + "개월 전";
-        } else {
+        if (diffTime < SEC){ msg = diffTime + "초 전"; }
+        else if ((diffTime /= SEC) < MIN) { msg = diffTime + "분 전"; }
+        else if ((diffTime /= MIN) < HOUR) { msg = (diffTime) + "시간 전"; }
+        else if ((diffTime /= HOUR) < DAY) { msg = (diffTime) + "일전"; }
+        else if ((diffTime /= DAY) < MONTH) { msg = (diffTime) + "개월 전"; }
+        else {
             SimpleDateFormat sdf = new SimpleDateFormat( "yyyy");
             String curYear = sdf.format(curTime);
             String passYear = sdf.format(tempDate);

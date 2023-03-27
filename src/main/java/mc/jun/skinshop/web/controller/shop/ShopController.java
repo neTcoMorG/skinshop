@@ -1,4 +1,4 @@
-package mc.jun.skinshop.web.controller;
+package mc.jun.skinshop.web.controller.shop;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class ShopController {
 
     @GetMapping("{shopId}")
     public ShopInformationResponse getShopById (@PathVariable Long shopId) {
-        return shopService.findById(shopId);
+        return ShopInformationResponse.of(shopService.findById(shopId));
     }
 
     // TODO 상점 수정
