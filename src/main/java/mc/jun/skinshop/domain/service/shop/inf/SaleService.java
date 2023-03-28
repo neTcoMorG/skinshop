@@ -13,7 +13,5 @@ public interface SaleService {
     Sale create (Long memberId, CreateSaleDto saleDto, List<MultipartFile> images);
     Sale findById (Long saleId);
     Page<Sale> findAll (Pageable pageable);
-
-
     void delete (Long memberId, Long saleId);
 }

@@ -14,6 +14,7 @@ import mc.jun.skinshop.domain.repository.SaleRepository;
 import mc.jun.skinshop.domain.service.file.FileService;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public Page<Sale> findAll(Pageable pageable) {
+    public Page<Sale> findAll (Pageable pageable) {
         return saleRepository.findAll(pageable);
     }
 

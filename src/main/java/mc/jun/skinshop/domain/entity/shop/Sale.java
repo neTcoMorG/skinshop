@@ -1,7 +1,6 @@
 package mc.jun.skinshop.domain.entity.shop;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,10 +16,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Sale {
 
-    public Sale(Shop shop, Item item, String text) {
+    public Sale (Shop shop, Item item, String text) {
         this.shop = shop;
         this.item = item;
         this.text = text;
@@ -41,7 +39,7 @@ public class Sale {
     @JoinColumn(name = "ITEM_ID")
     private Item item;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sale")
     private List<Image> images = new ArrayList<>();
 
     @CreatedDate
