@@ -22,7 +22,7 @@ public class DateUtil {
 
         String msg = null;
 
-        if (diffTime < SEC){ msg = diffTime + "초 전"; }
+        if (diffTime < SEC){ msg = diffTime + "방금전"; }
         else if ((diffTime /= SEC) < MIN) { msg = diffTime + "분 전"; }
         else if ((diffTime /= MIN) < HOUR) { msg = (diffTime) + "시간 전"; }
         else if ((diffTime /= HOUR) < DAY) { msg = (diffTime) + "일전"; }

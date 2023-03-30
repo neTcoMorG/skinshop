@@ -10,9 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class SkinShopApplication {
-
-//	framework vs library
-
 	public static void main(String[] args) {
 		SpringApplication.run(SkinShopApplication.class, args);
 	}

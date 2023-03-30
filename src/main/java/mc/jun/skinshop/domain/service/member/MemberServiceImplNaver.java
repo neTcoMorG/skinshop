@@ -21,13 +21,15 @@ public class MemberServiceImplNaver implements MemberService {
     @Transactional
     public Member create (MemberProfileDto profile) {
         if(!exits(profile)) {
-            Member createMember = memberRepository.save(new Member(profile.getName(), profile.getImage_url(),
+            Member createMember = memberRepository.save(new Member(profile.getName(),
+                    profile.getImage_url(),
                     profile.getEmail()));
+
             shopRepository.save(new Shop(createMember, createMember.getName() + "님의 공작소입니다"));
+
             return createMember;
         }
-        return memberRepository.findByEmail(profile.getEmail()).orElseThrow(()->
-                new MemberNotFoundException());
+        return memberRepository.findByEmail(profile.getEmail()).orElseThrow(MemberNotFoundException::new);
     }
 
     private boolean exits (MemberProfileDto profileDto) {

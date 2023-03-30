@@ -33,7 +33,8 @@ public class SaleController {
                                      HttpServletRequest request) {
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject().toString());
+        Long memberId = getMemberIdByToken(token);
+
         Sale createSale = saleService.create(memberId, createSaleDto, images);
         return ResponseEntity.ok(createSale.getId());
     }
@@ -47,6 +48,10 @@ public class SaleController {
     @GetMapping
     public List<SalePreviewInformationResponse> getPreview (@RequestParam Integer page) {
         return getSalePreviewInformationResponseList(page);
+    }
+
+    private Long getMemberIdByToken (String token) {
+        return Long.parseLong(jwtProvider.parseToken(token).getSubject());
     }
 
     private List<SalePreviewInformationResponse> getSalePreviewInformationResponseList (int page) {

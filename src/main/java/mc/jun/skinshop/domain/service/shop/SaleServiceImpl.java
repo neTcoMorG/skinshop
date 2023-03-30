@@ -14,9 +14,7 @@ import mc.jun.skinshop.domain.repository.SaleRepository;
 import mc.jun.skinshop.domain.service.file.FileService;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +43,7 @@ public class SaleServiceImpl implements SaleService {
                         saleDto.getItem().toEntity(),
                         saleDto.getText()));
 
-//        save.forEach(s -> createSale.addImage(new Image(createSale, s.getUuid(), s.getFullPath())));
+        save.forEach(s -> createSale.addImage(new Image(createSale, s.getUuid(), s.getFullPath())));
         return createSale;
     }
 
@@ -68,17 +66,16 @@ public class SaleServiceImpl implements SaleService {
     }
 
     private boolean isSizeOverflow(List<MultipartFile> images) {
-        return images.size() > 10 ? true : false;
+        return images.size() > 10;
     }
 
     private Sale validateSaleId (Long saleId) {
-        Sale sale = saleRepository.findById(saleId).orElseThrow(
-                () -> new SaleNotFoundException());
-        return sale;
+        return saleRepository.findById(saleId).orElseThrow(
+                SaleNotFoundException::new);
     }
 
     private Member getExistMember (Long id) {
         return memberRepository.findById(id).orElseThrow(
-                () -> new MemberNotFoundException());
+                MemberNotFoundException::new);
     }
 }

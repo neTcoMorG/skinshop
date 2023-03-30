@@ -26,7 +26,7 @@ public class ShopController {
     public ShopInformationResponse getShop (HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         Member findMember = memberRepository.findById(getMemberIdByToken(token)).orElseThrow(
-                () -> new MemberNotFoundException());
+                MemberNotFoundException::new);
 
         return getShopById(findMember.getShop().getId());
     }
@@ -42,6 +42,6 @@ public class ShopController {
     }
 
     private Long getMemberIdByToken (String token) {
-        return Long.parseLong(provider.parseToken(token).getSubject().toString());
+        return Long.parseLong(provider.parseToken(token).getSubject());
     }
 }

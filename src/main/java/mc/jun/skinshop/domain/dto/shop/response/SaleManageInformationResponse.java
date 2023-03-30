@@ -19,12 +19,16 @@ public class SaleManageInformationResponse {
     private SaleStatus status;
 
     public static SaleManageInformationResponse of (Sale sale) {
-        return new SaleManageInformationResponse(
-                sale.getId(),
-                sale.getImages().get(0).getUuid(),
-                sale.getItem().getItemName(),
-                sale.getItem().getPrice(),
-                sale.getStatus()
-        );
+        if (sale.getImages().size() > 0) {
+            return new SaleManageInformationResponse(
+                    sale.getId(),
+                    sale.getImages().get(0).getUuid(),
+                    sale.getItem().getItemName(),
+                    sale.getItem().getPrice(),
+                    sale.getStatus()
+            );
+        }
+
+        return new SaleManageInformationResponse();
     }
 }

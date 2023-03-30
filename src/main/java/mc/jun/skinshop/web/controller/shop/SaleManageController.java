@@ -25,7 +25,7 @@ public class SaleManageController {
     @GetMapping
     public List<SaleManageInformationResponse> getManageInformationList (HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject().toString());
+        Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject());
         return shopService.getManageInformationResponse(memberId);
     }
 }
