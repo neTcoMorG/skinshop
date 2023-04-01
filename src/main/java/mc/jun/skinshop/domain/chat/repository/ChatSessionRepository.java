@@ -9,19 +9,20 @@ import java.util.*;
 @Repository
 public class ChatSessionRepository {
 
-    private Map<String, WebSocketSession> session;
+    private Map<String, SessionEntity> session;
 
     @PostConstruct
     private void init () {
         session = new HashMap<>();
     }
 
-    public WebSocketSession create (String userName, WebSocketSession socketSession) {
-        session.put(userName, socketSession);
-        return socketSession;
+    public SessionEntity create (String userName, WebSocketSession socketSession) {
+        SessionEntity createEntity = new SessionEntity(userName, socketSession);
+        session.put(userName, createEntity);
+        return createEntity;
     }
 
-    public WebSocketSession findByUserName (String userName) {
+    public SessionEntity findByUserName (String userName) {
         if (exists(userName)) {
             return session.get(userName);
         }

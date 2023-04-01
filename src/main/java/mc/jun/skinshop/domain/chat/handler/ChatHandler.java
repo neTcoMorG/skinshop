@@ -35,12 +35,12 @@ public class ChatHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished (WebSocketSession session) throws Exception {
         log.info("JOIN: " + session.getId());
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed (WebSocketSession session, CloseStatus status) throws Exception {
         log.info("QUIT: " + session.getRemoteAddress().getAddress().toString());
     }
 
