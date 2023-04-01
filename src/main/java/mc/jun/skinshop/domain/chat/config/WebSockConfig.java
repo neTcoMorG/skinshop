@@ -1,12 +1,12 @@
 package mc.jun.skinshop.domain.chat.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mc.jun.skinshop.domain.chat.handler.ChatHandler;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.config.annotation.*;
 
+@Slf4j
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
@@ -16,6 +16,10 @@ public class WebSockConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatHandler, "/ws/chat").setAllowedOrigins("*");
+
+        log.info("[WEB_SOCK] ready.!");
+
+        registry.addHandler(chatHandler, "/chat")
+                .setAllowedOrigins("*");
     }
 }

@@ -1,4 +1,4 @@
-package mc.jun.skinshop.domain.chat.dto;
+package mc.jun.skinshop.domain.chat.protocol;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class Message {
-
-    private MessageType type;
+    private MessageType messageType;
+    private String target;
+    private String self;
     private String message;
-
 }
