@@ -2,6 +2,7 @@ package mc.jun.skinshop.domain.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mc.jun.skinshop.domain.chat.protocol.Message;
 import mc.jun.skinshop.domain.chat.repository.ChatSessionRepository;
 import mc.jun.skinshop.domain.chat.repository.SessionEntity;
@@ -10,7 +11,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -25,10 +28,18 @@ public class ChatService {
 
     public void send (Message message) throws IOException {
         SessionEntity findTarget = chatRepository.findByUserName(message.getTarget());
-        findTarget.getSession().sendMessage(new TextMessage(message.getMessage()));
+        SessionEntity sender = chatRepository.findByUserName(message.getSelf());
+
+        updateTarget(sender, findTarget);
+        findTarget.getSession().sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
     }
 
-    public void getAll (Message message) {
+    private void updateTarget (SessionEntity sender, SessionEntity target) {
+        sender.getTargets().add(target.getName());
+        target.getTargets().add(sender.getName());
+    }
 
+    public Set<String> getAll (Message message) {
+        return chatRepository.findByUserName(message.getSelf()).getTargets();
     }
 }

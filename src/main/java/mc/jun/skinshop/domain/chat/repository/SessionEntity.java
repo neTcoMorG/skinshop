@@ -14,7 +14,7 @@ public class SessionEntity {
 
     private String name;
     private WebSocketSession session;
-    private Set<SessionEntity> targets;
+    private Set<String> targets;
 
     public SessionEntity (String name, WebSocketSession session) {
         this.name = name;

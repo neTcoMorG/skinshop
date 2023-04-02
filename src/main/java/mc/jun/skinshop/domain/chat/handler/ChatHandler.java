@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mc.jun.skinshop.domain.chat.protocol.Message;
-import mc.jun.skinshop.domain.chat.protocol.MessageType;
 import mc.jun.skinshop.domain.chat.service.ChatService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.io.IOException;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -22,33 +23,27 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage (WebSocketSession session, TextMessage message) throws Exception {
-        Message raw = objectMapper.readValue(message.getPayload(), Message.class);
-
-        if (IS_JOIN_PROTOCOL(raw)) {
-            chatService.create(raw.getSelf(), session);
-            return;
-        }
-
-        if (IS_MESSAGE_PROTOCOL(raw)) {
-            chatService.send(raw);
-        }
+        Message raw = mappedToMessage(message);
+        dispatcher(raw, session);
     }
 
     @Override
-    public void afterConnectionEstablished (WebSocketSession session) throws Exception {
-        log.info("JOIN: " + session.getId());
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        log.info(session.getId() + " CONNECTED");
     }
 
-    @Override
-    public void afterConnectionClosed (WebSocketSession session, CloseStatus status) throws Exception {
-        log.info("QUIT: " + session.getRemoteAddress().getAddress().toString());
+    private void dispatcher (Message protocol, WebSocketSession session) throws IOException {
+        switch (protocol.getMessageType()) {
+            case JOIN -> chatService.create(protocol.getSelf(), session);
+            case MESSAGE -> chatService.send(protocol);
+            case LIST -> {
+                Set<String> targets = chatService.getAll(protocol);
+                session.sendMessage(new TextMessage(objectMapper.writeValueAsString(targets)));
+            }
+        }
     }
 
-    private boolean IS_JOIN_PROTOCOL (Message message) {
-        return message.getMessageType().equals(MessageType.JOIN);
-    }
-
-    private boolean IS_MESSAGE_PROTOCOL (Message message) {
-        return message.getMessageType().equals(MessageType.MESSAGE);
+    private Message mappedToMessage (TextMessage message) throws Exception {
+        return objectMapper.readValue(message.getPayload(), Message.class);
     }
 }
