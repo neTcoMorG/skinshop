@@ -30,7 +30,7 @@ public class SaleController {
     @PostMapping
     public HttpEntity<?> createSale (@RequestPart("sellObject") CreateSaleDto createSaleDto,
                                      @RequestPart("images") List<MultipartFile> images,
-                                     HttpServletRequest request) {
+                                     HttpServletRequest request) throws Exception {
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         Long memberId = getMemberIdByToken(token);
@@ -50,8 +50,8 @@ public class SaleController {
         return getSalePreviewInformationResponseList(page);
     }
 
-    private Long getMemberIdByToken (String token) {
-        return Long.parseLong(jwtProvider.parseToken(token).getSubject());
+    private Long getMemberIdByToken (String token) throws Exception {
+        return jwtProvider.parseToken(token).getId();
     }
 
     private List<SalePreviewInformationResponse> getSalePreviewInformationResponseList (int page) {

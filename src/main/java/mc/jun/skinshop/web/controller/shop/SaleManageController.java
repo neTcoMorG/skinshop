@@ -23,9 +23,9 @@ public class SaleManageController {
     private final ShopService shopService;
 
     @GetMapping
-    public List<SaleManageInformationResponse> getManageInformationList (HttpServletRequest request) {
+    public List<SaleManageInformationResponse> getManageInformationList (HttpServletRequest request) throws Exception {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Long memberId = Long.parseLong(jwtProvider.parseToken(token).getSubject());
+        Long memberId = jwtProvider.parseToken(token).getId();
         return shopService.getManageInformationResponse(memberId);
     }
 }

@@ -3,8 +3,14 @@ package mc.jun.skinshop.domain.chat.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mc.jun.skinshop.domain.chat.protocol.Message;
+import mc.jun.skinshop.domain.chat.dto.RawMessage;
+import mc.jun.skinshop.domain.chat.dto.WebSocketAddr;
+import mc.jun.skinshop.domain.chat.dto.WebSocketReceiver;
+import mc.jun.skinshop.domain.chat.dto.WebSocketSender;
+import mc.jun.skinshop.domain.chat.protocol.MessageType;
 import mc.jun.skinshop.domain.chat.service.ChatService;
+import mc.jun.skinshop.domain.dto.jwt.JwtUserObject;
+import mc.jun.skinshop.domain.util.JwtProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -20,11 +26,18 @@ public class ChatHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
     private final ChatService chatService;
+    private final JwtProvider jwtProvider;
 
     @Override
     protected void handleTextMessage (WebSocketSession session, TextMessage message) throws Exception {
-        Message raw = mappedToMessage(message);
-        dispatcher(raw, session);
+        RawMessage rawMessage = mappedToRawMessage(message);
+        JwtUserObject userObject = jwtProvider.parseToken(rawMessage.getToken());
+
+        WebSocketSender webSocketSender = new WebSocketSender(userObject.getId(), userObject.getName(), userObject.getEmail(), session);
+        WebSocketReceiver webSocketReceiver = new WebSocketReceiver(rawMessage.getTarget());
+        WebSocketAddr webSocketAddr = new WebSocketAddr(webSocketSender, webSocketReceiver);
+
+        dispatcher(rawMessage.getCommand(), webSocketAddr, rawMessage.getPayload());
     }
 
     @Override
@@ -32,18 +45,21 @@ public class ChatHandler extends TextWebSocketHandler {
         log.info(session.getId() + " CONNECTED");
     }
 
-    private void dispatcher (Message protocol, WebSocketSession session) throws IOException {
-        switch (protocol.getMessageType()) {
-            case JOIN -> chatService.create(protocol.getSelf(), session);
-            case MESSAGE -> chatService.send(protocol);
+    private void dispatcher (MessageType command, WebSocketAddr addr, String payload) throws IOException {
+        WebSocketSender sender = addr.getSender();
+        WebSocketReceiver receiver = addr.getReceiver();
+
+        switch (command) {
+            case JOIN -> chatService.create(sender);
+            case MESSAGE -> chatService.send(addr, payload);
             case LIST -> {
-                Set<String> targets = chatService.getAll(protocol);
-                session.sendMessage(new TextMessage(objectMapper.writeValueAsString(targets)));
+                Set<String> targets = chatService.getAll(sender);
+                sender.getSession().sendMessage(new TextMessage(objectMapper.writeValueAsString(targets)));
             }
         }
     }
 
-    private Message mappedToMessage (TextMessage message) throws Exception {
-        return objectMapper.readValue(message.getPayload(), Message.class);
+    private RawMessage mappedToRawMessage (TextMessage message) throws Exception {
+        return objectMapper.readValue(message.getPayload(), RawMessage.class);
     }
 }

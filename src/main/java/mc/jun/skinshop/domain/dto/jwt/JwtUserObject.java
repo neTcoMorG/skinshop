@@ -1,4 +1,4 @@
-package mc.jun.skinshop.domain.chat.protocol;
+package mc.jun.skinshop.domain.dto.jwt;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class Message {
-    private MessageType messageType;
-    private String token;
-    private String target;
-    private String message;
+public class JwtUserObject {
+    private Long id;
+    private String name;
+    private String email;
 }

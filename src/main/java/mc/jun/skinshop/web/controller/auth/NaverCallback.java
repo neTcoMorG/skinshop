@@ -3,6 +3,7 @@ package mc.jun.skinshop.web.controller.auth;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mc.jun.skinshop.domain.dto.jwt.JwtUserObject;
 import mc.jun.skinshop.domain.dto.shop.dto.MemberProfileDto;
 import mc.jun.skinshop.domain.entity.member.Member;
 import mc.jun.skinshop.domain.service.member.MemberService;
@@ -31,11 +32,14 @@ public class NaverCallback {
     private final MemberService memberService;
 
     @GetMapping
-    public String callback2 (@RequestParam String code) {
+    public String callback2 (@RequestParam String code) throws Exception {
         String access_token = authService.getAuth(code).getAccess_token();
         NaverProfile profile = authService.getProfile(access_token);
         Member createMember = memberService.create(mappedTo(profile));
-        return jwtProvider.create(createMember.getId());
+
+        return jwtProvider.create(new JwtUserObject(createMember.getId(),
+                createMember.getName(),
+                createMember.getEmail()));
     }
 
     private MemberProfileDto mappedTo (NaverProfile naverProfile) {

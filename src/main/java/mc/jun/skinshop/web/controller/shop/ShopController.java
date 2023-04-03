@@ -23,7 +23,7 @@ public class ShopController {
     private final MemberRepository memberRepository;
 
     @GetMapping
-    public ShopInformationResponse getShop (HttpServletRequest request) {
+    public ShopInformationResponse getShop (HttpServletRequest request) throws Exception {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         Member findMember = memberRepository.findById(getMemberIdByToken(token)).orElseThrow(
                 MemberNotFoundException::new);
@@ -41,7 +41,7 @@ public class ShopController {
 
     }
 
-    private Long getMemberIdByToken (String token) {
-        return Long.parseLong(provider.parseToken(token).getSubject());
+    private Long getMemberIdByToken (String token) throws Exception {
+        return provider.parseToken(token).getId();
     }
 }

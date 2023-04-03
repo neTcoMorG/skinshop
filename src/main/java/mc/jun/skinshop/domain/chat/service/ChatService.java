@@ -3,12 +3,12 @@ package mc.jun.skinshop.domain.chat.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mc.jun.skinshop.domain.chat.protocol.Message;
+import mc.jun.skinshop.domain.chat.dto.WebSocketAddr;
+import mc.jun.skinshop.domain.chat.dto.WebSocketSender;
 import mc.jun.skinshop.domain.chat.repository.ChatSessionRepository;
 import mc.jun.skinshop.domain.chat.repository.SessionEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.Set;
@@ -18,20 +18,29 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ChatService {
 
-    private final ChatSessionRepository chatRepository;
+    private final ChatSessionRepository chatSessionRepository;
     private final ObjectMapper objectMapper;
 
-    public void create (String userName, WebSocketSession session) throws IOException {
-        chatRepository.create(userName, session);
-        session.sendMessage(new TextMessage("Hello, world " + userName));
+    public void create (WebSocketSender sender) throws IOException {
+        log.info("Created Session Entity: " + sender.getName());
+
+        if (!chatSessionRepository.exists(sender.getName())) {
+            chatSessionRepository.create(sender.getName(), sender.getSession());
+            sender.getSession().sendMessage(new TextMessage("Hello, world " + sender.getName()));
+            return;
+        }
+
+        sender.getSession().sendMessage(new TextMessage("이미 존재하는 세션"));
     }
 
-    public void send (Message message) throws IOException {
-        SessionEntity findTarget = chatRepository.findByUserName(message.getTarget());
-        SessionEntity sender = chatRepository.findByUserName(message.getSelf());
+    public void send (WebSocketAddr addr, String payload) throws IOException {
+        SessionEntity findTarget = chatSessionRepository.findByUserName(
+                addr.getReceiver().getName());
+        SessionEntity findSender = chatSessionRepository.findByUserName(
+                addr.getSender().getName());
 
-        updateTarget(sender, findTarget);
-        findTarget.getSession().sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+        updateTarget(findSender, findTarget);
+        findTarget.getSession().sendMessage(new TextMessage(objectMapper.writeValueAsString(payload)));
     }
 
     private void updateTarget (SessionEntity sender, SessionEntity target) {
@@ -39,7 +48,8 @@ public class ChatService {
         target.getTargets().add(sender.getName());
     }
 
-    public Set<String> getAll (Message message) {
-        return chatRepository.findByUserName(message.getSelf()).getTargets();
+
+    public Set<String> getAll (WebSocketSender sender) {
+        return chatSessionRepository.findByUserName(sender.getName()).getTargets();
     }
 }
