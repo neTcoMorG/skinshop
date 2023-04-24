@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mc.jun.skinshop.domain.dto.shop.ImageSaveInformation;
 import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
 import mc.jun.skinshop.domain.entity.member.Member;
+import mc.jun.skinshop.domain.entity.member.ViewHistory;
 import mc.jun.skinshop.domain.entity.shop.Image;
 import mc.jun.skinshop.domain.entity.shop.Sale;
 import mc.jun.skinshop.domain.exception.MemberNotFoundException;
@@ -77,5 +78,19 @@ public class SaleServiceImpl implements SaleService {
     private Member getExistMember (Long id) {
         return memberRepository.findById(id).orElseThrow(
                 MemberNotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public void count (Long memberId, Long saleId) {
+        Member findMember = memberRepository.findById(memberId).orElseThrow(
+                MemberNotFoundException::new);
+        Sale findSale = saleRepository.findById(saleId).orElseThrow(
+                SaleNotFoundException::new);
+
+        if (!findMember.isVisited(saleId)) {
+            findSale.count();
+            findMember.getViewHistoryList().add(new ViewHistory(findMember, findSale));
+        }
     }
 }

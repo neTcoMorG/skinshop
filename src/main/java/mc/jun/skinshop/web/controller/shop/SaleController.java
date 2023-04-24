@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import mc.jun.skinshop.domain.dto.shop.dto.CreateSaleDto;
 import mc.jun.skinshop.domain.dto.shop.response.SaleInformationResponse;
 import mc.jun.skinshop.domain.dto.shop.response.SalePreviewInformationResponse;
+import mc.jun.skinshop.domain.entity.member.Member;
 import mc.jun.skinshop.domain.entity.shop.Sale;
+import mc.jun.skinshop.domain.repository.MemberRepository;
 import mc.jun.skinshop.domain.service.shop.inf.SaleService;
 import mc.jun.skinshop.domain.util.JwtProvider;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,7 @@ public class SaleController {
 
     private final SaleService saleService;
     private final JwtProvider jwtProvider;
+    private final MemberRepository memberRepository;
 
     @PostMapping
     public HttpEntity<?> createSale (@RequestPart("sellObject") CreateSaleDto createSaleDto,
@@ -45,6 +48,20 @@ public class SaleController {
         return SaleInformationResponse.of(findSale);
     }
 
+    @GetMapping("/visited/{saleId}")
+    public HttpEntity<?> visitedCheck (HttpServletRequest request, @PathVariable Long saleId) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Long memberId;
+
+        try {
+            memberId = jwtProvider.parseToken(token).getId();
+            saleService.count(memberId, saleId);
+        }
+        catch (Exception ignored) {}
+
+        return ResponseEntity.ok().body("");
+    }
+
     @GetMapping
     public List<SalePreviewInformationResponse> getPreview (@RequestParam Integer page) {
         return getSalePreviewInformationResponseList(page);
@@ -57,8 +74,8 @@ public class SaleController {
     private List<SalePreviewInformationResponse> getSalePreviewInformationResponseList (int page) {
         List<SalePreviewInformationResponse> saleInformationResponses = new ArrayList<>();
 
-        saleService.findAll(PageRequest.of(page, 5, Sort.by("created").descending())).forEach(sale ->
-            saleInformationResponses.add(SalePreviewInformationResponse.of(sale)));
+        saleService.findAll(PageRequest.of(page, 5, Sort.by("created").descending()))
+                .forEach(sale -> saleInformationResponses.add(SalePreviewInformationResponse.of(sale)));
 
         return saleInformationResponses;
     }

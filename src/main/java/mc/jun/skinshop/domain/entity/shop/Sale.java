@@ -23,6 +23,7 @@ public class Sale {
         this.item = item;
         this.text = text;
         this.status = SaleStatus.DOING;
+        this.viewer = 0;
     }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +48,10 @@ public class Sale {
 
     private String text;
 
+    private Integer viewer;
+
     public void addImage (Image image) {
         this.images.add(image);
     }
+    public void count () { this.viewer++; }
 }

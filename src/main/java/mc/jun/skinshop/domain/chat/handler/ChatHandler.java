@@ -36,7 +36,7 @@ public class ChatHandler extends TextWebSocketHandler {
         WebSocketSender webSocketSender = new WebSocketSender(userObject.getId(), userObject.getName(), userObject.getEmail(), session);
         WebSocketReceiver webSocketReceiver = new WebSocketReceiver(rawMessage.getTarget());
         WebSocketAddr webSocketAddr = new WebSocketAddr(webSocketSender, webSocketReceiver);
-
+        
         dispatcher(rawMessage.getCommand(), webSocketAddr, rawMessage.getPayload());
     }
 

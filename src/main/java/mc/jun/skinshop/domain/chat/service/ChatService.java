@@ -39,15 +39,14 @@ public class ChatService {
         SessionEntity findSender = chatSessionRepository.findByUserName(
                 addr.getSender().getName());
 
-        updateTarget(findSender, findTarget);
+        updateEntity(findSender, findTarget);
         findTarget.getSession().sendMessage(new TextMessage(objectMapper.writeValueAsString(payload)));
     }
 
-    private void updateTarget (SessionEntity sender, SessionEntity target) {
+    private void updateEntity (SessionEntity sender, SessionEntity target) {
         sender.getTargets().add(target.getName());
         target.getTargets().add(sender.getName());
     }
-
 
     public Set<String> getAll (WebSocketSender sender) {
         return chatSessionRepository.findByUserName(sender.getName()).getTargets();

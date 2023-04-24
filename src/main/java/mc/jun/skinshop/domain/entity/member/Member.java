@@ -9,6 +9,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter
 @Entity
@@ -35,4 +38,19 @@ public class Member {
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Shop shop;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ViewHistory> viewHistoryList = new ArrayList<>();
+
+    public boolean isVisited (Long saleId) {
+        AtomicBoolean result = new AtomicBoolean(false);
+
+        viewHistoryList.forEach(view -> {
+            if (view.getSale().getId().equals(saleId)) {
+                result.set(true);
+            }
+        });
+
+        return result.get();
+    }
 }
+

@@ -14,4 +14,6 @@ public interface SaleService {
     Sale findById (Long saleId);
     Page<Sale> findAll (Pageable pageable);
     void delete (Long memberId, Long saleId);
+
+    void count (Long memberId, Long saleId);
 }

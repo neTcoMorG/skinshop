@@ -8,6 +8,7 @@ import mc.jun.skinshop.domain.service.oauth.naver.json.NaverAuth;
 import mc.jun.skinshop.domain.service.oauth.naver.json.NaverProfile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -42,7 +43,7 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
                 .uri(API_TOKEN_URI)
                 .body(BodyInserters.fromFormData(createTokenRequestForm(code)))
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError(), error -> Mono.error(RuntimeException::new))
+                .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(RuntimeException::new))
                 .bodyToMono(NaverAuth.class)
                 .block();
     }
@@ -63,7 +64,7 @@ public class NaverAuthService implements AuthService<NaverAuth, NaverProfile> {
                 .uri(API_PROFILE_URI)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError(), error -> Mono.error(InvalidAccessTokenException::new))
+                .onStatus(HttpStatusCode::is4xxClientError, error -> Mono.error(InvalidAccessTokenException::new))
                 .bodyToMono(NaverProfile.class)
                 .block();
     }
